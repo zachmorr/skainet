@@ -57,11 +57,14 @@ jobs:
     - name: Echo
       run: ls -l
 
+    - name: Echo dist
+      run: ls -l dist/
+
     - name: Upload build
       uses: actions/upload-artifact@v1
       with:
         name: dist
-        path: dist/*
+        path: dist/
 
   pypi_release:
     needs: build_dist
@@ -81,6 +84,9 @@ jobs:
       uses: actions/download-artifact@v1
       with:
         name: dist
+
+    - name: Echo dist
+      run: ls -l dist/
 
     - name: Upload to Pypi
       run: python -m twine upload dist/*
