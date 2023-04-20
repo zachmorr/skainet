@@ -135,7 +135,7 @@ jobs:
         path: ${{ matrix.OUT_FILE}}
 
   gh_release:
-    needs: [build_exe, pypi_release]
+    needs: build_exe
     runs-on: ubuntu-latest
     steps:
     - name: Check out
