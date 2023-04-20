@@ -1,0 +1,11 @@
+-e ./
+pyinstaller==5.9.0
+pytest==7.3.0
+black==23.3.0
+isort==5.11.5
+flake8==5.0.4
+build
+twine
+commitizen
+pre-commit
+yt-dlp

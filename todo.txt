@@ -1,0 +1,35 @@
+TODO:
+- documentation
+    - add links to instructions on how to use options
+    - more help text
+- add CI/CD
+    - verify actions still work on protected branches
+    - add change notes to releases
+    - create windows installer
+    - choco
+    - homebrew
+    - apt/yum/dnf/pacman/dpkg/snap/rpm
+- logging
+    - errors
+        - create rotating log files
+        - print to stderr
+    - performance
+    - debugging
+- tests
+    - make cheaper to run
+        - mocks?
+    - file upload/download
+    - image
+        - verify image output (webbrowser or image app)
+
+- add tiktoken (openai tokenizer package) to get accurate token counts
+- convert to click.echo() instead of print()
+- add url arguments
+- add support for multiple chat histories
+
+Look into:
+- text finish_reason
+- reduce dependencies (aka use raw requests, not openai package)
+- support for openai plugins
+- Add other ai sources (llama.cpp, huggingface)
+- send error messages to chatgpt (lol)
