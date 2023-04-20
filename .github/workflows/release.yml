@@ -33,7 +33,7 @@ jobs:
   #     run: |
   #       pyinstaller skainet.spec
 
-  build:
+  build_exe:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -67,14 +67,8 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install -r requirements.txt
 
-    - name: Build bdist/sdist
-      run: python -m build
-
     - name: Build with pyinstaller for ${{matrix.TARGET}}
       run: ${{matrix.CMD_BUILD}}
-
-    - name: Upload to Pypi
-      run: python -m twine upload dist/skainet-*
 
     - name: Upload executable
       uses: actions/upload-artifact@v1
@@ -82,8 +76,35 @@ jobs:
         name: executable
         path: ${{ matrix.OUT_FILE}}
 
-  release:
-    needs: build
+  build_dist:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v3
+      with:
+        python-version: 3.7
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install --upgrade build twine
+
+    - name: Build bdist/sdist
+      run: python -m build
+
+    - name: Upload build
+      uses: actions/upload-artifact@v1
+      with:
+        name: build
+        path: dist/skainet-*
+
+  gh_release:
+    needs: build_exe
     runs-on: ubuntu-latest
     steps:
     - name: Check out
@@ -91,7 +112,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Load executable
+    - name: Download executable
       uses: actions/download-artifact@v1
       with:
         name: executable
@@ -102,3 +123,16 @@ jobs:
         files: executable/skainet*.zip
       env:
         GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+
+  pypi_release:
+    needs: build_dist
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download build
+      uses: actions/download-artifact@v1
+      with:
+        name: build
+
+    - name: Upload to Pypi
+      run: python -m twine upload build/*
+
