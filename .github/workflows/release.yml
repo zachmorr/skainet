@@ -7,7 +7,8 @@ on:
       - "v*.*.*"
 
 env:
-  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+  TWINE_USERNAME: __token__
+  TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
 
 jobs:
   # test:
@@ -66,8 +67,14 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install -r requirements.txt
 
+    - name: Build bdist/sdist
+      run: python -m build
+
     - name: Build with pyinstaller for ${{matrix.TARGET}}
       run: ${{matrix.CMD_BUILD}}
+
+    - name: Upload to Pypi
+      run: python -m twine upload dist/skainet-*
 
     - name: Upload executable
       uses: actions/upload-artifact@v1
