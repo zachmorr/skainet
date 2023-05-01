@@ -74,7 +74,7 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: 3.7
-        
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -89,7 +89,7 @@ jobs:
       run: ls -l dist/
 
     - name: Upload to Pypi
-      run: python -m twine upload dist/*
+      run: python -m twine upload dist/* --verbose
 
   build_exe:
     runs-on: ${{ matrix.os }}
