@@ -20,19 +20,6 @@ def create_tempfile(ext: str) -> Path:
     return temp_file
 
 
-def open_editor():
-    temp_file = create_tempfile(".txt")
-
-    if "EDITOR" in os.environ:
-        editor = os.environ["EDITOR"]
-    else:
-        editor = CONFIG["general"]["editor"]
-
-    subprocess.run([editor, str(temp_file)], check=True)
-
-    return temp_file.read_text()
-
-
 def handle_openai_error(error: openai.OpenAIError):
     click.echo(f"{error.__class__.__name__}: {error}", err=True)
     sys.exit(1)
@@ -70,6 +57,6 @@ class Prompt(click.ParamType):
             value += sys.stdin.read()
 
         if not value:
-            value = open_editor()
+            value = click.edit()
 
         return value
