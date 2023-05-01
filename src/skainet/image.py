@@ -180,11 +180,6 @@ def display_image_response(response, format, num, print_response):
             else:
                 click.echo(f"{image}")
         else:
-            try:
-                if format == "b64_json":
-                    image = image.as_uri()
-
-                webbrowser.open(image)
-            except Exception as e:
-                click.echo(f"Error opening image: {e}", err=True)
-                sys.exit(1)
+            if format == "b64_json":
+                image = image.as_uri()  # click.launch will fail if given a bare path
+            click.launch(image)
