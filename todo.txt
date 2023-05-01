@@ -21,11 +21,15 @@ TODO:
     - file upload/download
     - image
         - verify image output (webbrowser or image app)
-
-- add tiktoken (openai tokenizer package) to get accurate token counts
-- convert to click.echo() instead of print()
 - add url arguments
+    - download file for Prompt
+        - "skai chat URL"
+    - download images for image input
+        - "skai image variation URL"
 - add support for multiple chat histories
+- add support for multiple prompt arguments
+    - "skai chat 'explain this code' URL"
+    - append piped input to arguments
 
 Look into:
 - text finish_reason
@@ -33,3 +37,5 @@ Look into:
 - support for openai plugins
 - Add other ai sources (llama.cpp, huggingface)
 - send error messages to chatgpt (lol)
+- add tiktoken (openai tokenizer package) to get accurate token counts
+    - requires Python 3.8 :(
