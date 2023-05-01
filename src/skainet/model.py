@@ -18,12 +18,12 @@ def list():
     try:
         model_list = openai.Model.list()["data"]
     except openai.OpenAIError as e:
-        utils.handle_error(e)
+        utils.handle_openai_error(e)
     else:
-        print("Available Models:")
+        click.echo("Available Models:")
         model_names = [model["id"] for model in model_list]
         for name in sorted(model_names):
-            print(f"{name}")
+            click.echo(f"{name}")
 
 
 @model.command()
@@ -33,7 +33,7 @@ def show(model_name: str):
     try:
         model_list = openai.Model.list()["data"]
     except openai.OpenAIError as e:
-        utils.handle_error(e)
+        utils.handle_openai_error(e)
     else:
         model_info = {}
         for model in model_list:
@@ -41,7 +41,7 @@ def show(model_name: str):
                 model_info = model
 
         if model_info:
-            print(model_info)
+            click.echo(model_info)
         else:
-            print(f"No model with name '{model_name}' found.")
+            click.echo(f"No model with name '{model_name}' found.", err=True)
             sys.exit(1)

@@ -33,8 +33,8 @@ def open_editor():
     return temp_file.read_text()
 
 
-def handle_error(error: openai.OpenAIError):
-    print(f"{error.__class__.__name__}: {error}")
+def handle_openai_error(error: openai.OpenAIError):
+    click.echo(f"{error.__class__.__name__}: {error}", err=True)
     sys.exit(1)
 
 

@@ -91,7 +91,7 @@ def create(prompt: str, num: int, size: str, format: str, print_response: bool):
             response_format=format,
         )
     except openai.OpenAIError as e:
-        utils.handle_error(e)
+        utils.handle_openai_error(e)
     else:
         display_image_response(response, format, num, print_response)
 
@@ -129,7 +129,7 @@ def edit(
             response_format=format,
         )
     except openai.OpenAIError as e:
-        utils.handle_error(e)
+        utils.handle_openai_error(e)
     else:
         display_image_response(response, format, num, print_response)
 
@@ -157,7 +157,7 @@ def variation(
             response_format=format,
         )
     except openai.OpenAIError as e:
-        utils.handle_error(e)
+        utils.handle_openai_error(e)
     else:
         display_image_response(response, format, num, print_response)
 
@@ -176,9 +176,9 @@ def display_image_response(response, format, num, print_response):
 
         if print_response is True:
             if num > 1:
-                print(f"({index}): {image}")
+                click.echo(f"({index}): {image}")
             else:
-                print(f"{image}")
+                click.echo(f"{image}")
         else:
             try:
                 if format == "b64_json":
@@ -186,5 +186,5 @@ def display_image_response(response, format, num, print_response):
 
                 webbrowser.open(image)
             except Exception as e:
-                print(f"Error opening image: {e}")
+                click.echo(f"Error opening image: {e}", err=True)
                 sys.exit(1)

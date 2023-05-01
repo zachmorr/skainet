@@ -6,6 +6,8 @@ from configparser import ConfigParser
 from pathlib import Path
 from typing import Dict, List
 
+import click
+
 ## Data Directory
 if platform.system() == "Windows":
     appdata = os.getenv("LOCALAPPDATA")
@@ -16,7 +18,7 @@ else:
 try:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 except OSError as e:
-    print(f"Error while attempting to create data directory: {e}")
+    click.echo(f"Error while attempting to create data directory: {e}", err=True)
     sys.exit(1)
 
 
@@ -54,7 +56,7 @@ def save_chat(chat: List[Dict[str, str]]):
 # Configuration
 default_config_path = Path(__file__).parent / "config.ini"
 if not default_config_path.exists():
-    print(f"Default config ({default_config_path}) does not exist!")
+    click.echo(f"Default config ({default_config_path}) does not exist!", err=True)
     sys.exit(1)
 
 DEFAULT_CONFIG = ConfigParser()

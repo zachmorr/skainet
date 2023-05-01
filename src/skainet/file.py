@@ -22,14 +22,14 @@ def list():
     try:
         response = openai.File.list()
     except openai.OpenAIError as e:
-        utils.handle_error(e)
+        utils.handle_openai_error(e)
     else:
         if response["data"]:
-            print("Files:")
+            click.echo("Files:")
             for file in response["data"]:
-                print(file)
+                click.echo(file)
         else:
-            print("No files")
+            click.echo("No files")
 
 
 @file.command()
@@ -51,9 +51,9 @@ def upload(
             file=file.read_text(), purpose=purpose, user_provided_filename=file.name
         )
     except openai.OpenAIError as e:
-        utils.handle_error(e)
+        utils.handle_openai_error(e)
     else:
-        print(response)
+        click.echo(response)
 
 
 @file.command()
@@ -67,7 +67,7 @@ def delete(
             sid=file_id,
         )
     except openai.OpenAIError as e:
-        utils.handle_error(e)
+        utils.handle_openai_error(e)
     else:
         pass
 
@@ -98,7 +98,7 @@ def download(file_id: str, output: Path):
             else:
                 output = output / file_name
     except openai.OpenAIError as e:
-        utils.handle_error(e)
+        utils.handle_openai_error(e)
     else:
         if output.exists():
             for num in itertools.count(start=1):
@@ -127,7 +127,7 @@ def find(
             purpose=purpose,
         )
     except openai.OpenAIError as e:
-        utils.handle_error(e)
+        utils.handle_openai_error(e)
     else:
         for file in response:
-            print(file)
+            click.echo(file)

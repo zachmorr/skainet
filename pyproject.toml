@@ -3,7 +3,7 @@ requires = ["setuptools", "wheel"]
 
 [project]
 name = "skainet"
-version = "0.0.0.dev8"
+version = "0.0.0"
 authors = [
     {name = "Zach Morris", email = "zacharymorr@outlook.com"}
 ]

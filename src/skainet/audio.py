@@ -114,9 +114,9 @@ def transcribe(
             language=lang,
         )
     except openai.OpenAIError as e:
-        utils.handle_error(e)
+        utils.handle_openai_error(e)
     else:
-        print(response["text"])
+        click.echo(response["text"])
 
 
 @audio.command(context_settings={"show_default": True})
@@ -139,6 +139,6 @@ def translate(
             prompt=prompt,
         )
     except openai.OpenAIError as e:
-        utils.handle_error(e)
+        utils.handle_openai_error(e)
     else:
-        print(response["text"])
+        click.echo(response["text"])

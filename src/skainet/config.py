@@ -15,13 +15,13 @@ def config():
 @config.command()
 def show():
     """Display contents of config file"""
-    print(_CONFIG_FILE.read_text())
+    click.echo(_CONFIG_FILE.read_text())
 
 
 @config.command()
 def path():
     """Show path to config file"""
-    print(str(_CONFIG_FILE.absolute()))
+    click.echo(str(_CONFIG_FILE.absolute()))
 
 
 @config.command()
@@ -36,7 +36,7 @@ def set(setting: List[str], value: str):
             dic = dic[key]
         dic[config_path[-1]] = value
     except KeyError as e:
-        print(f"{' '.join(setting)} does not exist")
+        click.echo(f"{' '.join(setting)} does not exist", err=True)
         sys.exit(1)
 
     with open(_CONFIG_FILE, "w") as configfile:

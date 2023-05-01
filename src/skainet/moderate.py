@@ -24,6 +24,6 @@ def moderate(input: str, model: str):
             model=model,
         )
     except openai.OpenAIError as e:
-        utils.handle_error(e)
+        utils.handle_openai_error(e)
     else:
-        print(response)
+        click.echo(response)

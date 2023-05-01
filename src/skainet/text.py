@@ -139,9 +139,12 @@ def chat(
     available_context = context - SYSTEM_MESSAGE_LEN
     current_context = truncate_context(chat_history, available_context)
     if current_context != chat_history:
-        print(
-            "Warning: your chat history has been truncated to fit the context limit",
-            file=sys.stderr,
+        click.echo(
+            click.style(
+                "Warning: your chat history has been truncated to fit the context limit",
+                fg="yellow",
+            ),
+            err=True,
         )
     current_context.insert(0, SYSTEM_MESSAGE)
 
@@ -161,13 +164,13 @@ def chat(
             # user=args.user
         )
     except openai.OpenAIError as e:
-        utils.handle_error(e)
+        utils.handle_openai_error(e)
     else:
         if num > 1:
             if no_stream:
                 for index, choice in enumerate(response["choices"]):
                     content = choice["message"]["content"]
-                    print(f"({index}) {content}")
+                    click.echo(f"({index}) {content}")
             else:
                 messages = {}
                 for chunk in response:
@@ -182,11 +185,11 @@ def chat(
                             messages[index] += content
 
                 for index in range(len(messages)):
-                    print(f"({index}) {messages[index]}")
+                    click.echo(f"({index}) {messages[index]}")
         else:
             if no_stream:
                 new_response = response["choices"][0]["message"]
-                print(new_response["content"])
+                click.echo(new_response["content"])
             else:
                 new_response = {"role": "", "content": ""}
                 for chunk in response:
@@ -204,7 +207,7 @@ def chat(
                     else:
                         text = ""
 
-                    print(text, end="")
+                    click.echo(text, nl=False)
 
             if not no_update:
                 chat_history.append(new_response)
@@ -295,13 +298,13 @@ def complete(
             # logit_bias=args.logit_bias,
         )
     except openai.OpenAIError as e:
-        utils.handle_error(e)
+        utils.handle_openai_error(e)
     else:
         if num > 1:
             if no_stream:
                 for index, choice in enumerate(response["choices"]):
                     text = choice["text"]
-                    print(f"({index}) {text}")
+                    click.echo(f"({index}) {text}")
             else:
                 messages = {}
                 for chunk in response:
@@ -314,15 +317,15 @@ def complete(
                         messages[index] += text
 
                 for index, text in messages.items():
-                    print(f"({index}) {text}")
+                    click.echo(f"({index}) {text}")
         else:
             if no_stream:
                 text = response["choices"][0]["text"]
-                print(text, end="")
+                click.echo(text, nl=False)
             else:
                 for chunk in response:
                     text = chunk["choices"][0]["text"]
-                    print(text, end="")
+                    click.echo(text, nl=False)
 
 
 DEFAULT_EDIT_MODEL = CONFIG["edit"]["model"]
@@ -352,11 +355,11 @@ def edit(instruction: str, input: str, model: str, temp: float, num: int):
             # top_p=args.top_p,
         )
     except openai.OpenAIError as e:
-        utils.handle_error(e)
+        utils.handle_openai_error(e)
     else:
         if num > 1:
             for choice in response["choices"]:
-                print(f"({choice['index']}) {choice['text']}")
+                click.echo(f"({choice['index']}) {choice['text']}")
         else:
             text = response["choices"][0]["text"]
-            print(text)
+            click.echo(text)
